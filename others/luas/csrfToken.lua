@@ -26,7 +26,12 @@ red:set_timeout(redis_connection_timeout);
 ok, err = red:connect("127.0.0.1", 6379);
 
 if not ok then
-  ngx.say("failed to connect: ", err)
+    json = require"cjson"
+    data = json.encode({
+        code = -1,
+        message = "redisError"
+    })
+    ngx.say(data)
   return
 end
 sustainTime = 1800
