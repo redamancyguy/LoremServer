@@ -1,3 +1,8 @@
+Version 2.0 was accidentally deleted
+
+Version 1.0 is stored in another warehouse
+
+
 # LoremServer3
  2.0->3.0
 
