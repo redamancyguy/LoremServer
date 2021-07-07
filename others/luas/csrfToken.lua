@@ -1,6 +1,6 @@
 
 local function randomStr(len)
-    local rankStr = ""
+    local rankStr = ''
     local randNum = 0
     --math.randomseed(ngx.time())  --seed的两个时间种子相差不大，生成的随机数会很可能相同（100,102 但是random 生成的第一个随机数却是一样的）
     math.randomseed(tostring(ngx.time()):reverse():sub(1, 5)) --解决方法:把time返回的数值字串倒过来（低位变高位）,再取高位5位
@@ -17,55 +17,54 @@ local function randomStr(len)
     return rankStr
 end
 
-
-
-
-redis = require "resty.redis";
+redis = require 'resty.redis';
 red = redis:new();
 red:set_timeout(redis_connection_timeout);
-ok, err = red:connect("127.0.0.1", 6379);
-
+ok, err = red:connect('127.0.0.1', 6379);
 if not ok then
-    json = require"cjson"
+    json = require'cjson'
     data = json.encode({
         code = -1,
-        message = "redisError"
+        message = 'redisError'
     })
     ngx.say(data)
   return
 end
-sustainTime = 1800
+
+tempTime = 30
+sustainTime = 300
 local headers = ngx.req.get_headers()
-if headers['csrfToken'] and string.len(headers['csrfToken']) == 30 then
-  newdynamicCode = randomStr(15)
-  staticCode = string.sub(headers['csrfToken'],0,15)
-  dynamicCode = string.sub(headers['csrfToken'],16,30)
-  oldDynamicCode = red:hget(staticCode,'dynamicCode')
-  red:hset(staticCode,'dynamicCode',newdynamicCode)
-  red:expire(staticCode, sustainTime)
-  ngx.header.csrfTtoken=staticCode..newdynamicCode
-  if oldDynamicCode == dynamicCode then
+if headers.CsrfToken and string.len(headers.CsrfToken) == 30 then
+  newDynamicCode = randomStr(15)
+  clientStaticCode = string.sub(headers.CsrfToken,0,15)
+  clientDynamicCode = string.sub(headers.CsrfToken,16,30)
+  serverDynamicCode = red:hget(clientStaticCode,'dynamicCode')
+  red:hset(clientStaticCode,'dynamicCode',newDynamicCode)
+  red:expire(clientStaticCode, sustainTime)
+  ngx.header.CsrfToken=clientStaticCode..newDynamicCode
+  if serverDynamicCode == clientDynamicCode then
     return
   else
-    json = require"cjson"
+    json = require'cjson'
     data = json.encode({
         code = 5,
-        message = "DynamicVerifyError"
+        message = 'DynamicVerifyError'
     })
+--     ngx.status = 500
+    ngx.testCode = 'dsadsa'
     ngx.say(data)
-    return
   end
-
 else
-  staticCode = randomStr(15)
-  dynamicCode = randomStr(15)
-  red:hset(staticCode,'dynamicCode',dynamicCode)
-  red:expire(staticCode, sustainTime)
-  ngx.header.csrfTtoken=staticCode..dynamicCode
-  json = require"cjson"
+  newStaticCode = randomStr(15)
+  newDynamicCode = randomStr(15)
+  red:hset(newStaticCode,'dynamicCode',newDynamicCode)
+  red:expire(newStaticCode, tempTime)
+  ngx.header.CsrfToken=newStaticCode..newDynamicCode
+  json = require'cjson'
   data = json.encode({
       code = 5,
-      message = "dynamicVerifyError"
+      message = 'TokenBasicError'
   })
+--   ngx.status = 500
     ngx.say(data)
 end

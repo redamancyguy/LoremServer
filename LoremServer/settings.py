@@ -80,14 +80,14 @@ WSGI_APPLICATION = 'LoremServer.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+from utils import dbs
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'LoremServer',
         'USER': 'user',
         'PASSWORD': '3325111',
-        'HOST': '39.104.209.232',
+        'HOST': dbs.host,
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
         'ATOMIC_REQUEST': True,

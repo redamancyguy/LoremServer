@@ -1,5 +1,6 @@
+host = '39.104.209.232'
 class Mongo:
-    def __init__(self, host='39.104.209.232', port=27017):
+    def __init__(self, host=host, port=27017):
         from pymongo import MongoClient
         self.__host = host
         self.__port = port
@@ -25,7 +26,7 @@ class Mongo:
 class Redis:
     def __init__(self):
         import redis
-        self.__db = redis.Redis(host='39.104.209.232', port=6379, decode_responses=True)
+        self.__db = redis.Redis(host=host, port=6379, decode_responses=True)
 
     def getDB(self):
         return self.__db
