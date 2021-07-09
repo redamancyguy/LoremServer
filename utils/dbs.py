@@ -1,4 +1,6 @@
 host = '39.104.209.232'
+
+
 class Mongo:
     def __init__(self, host=host, port=27017):
         from pymongo import MongoClient

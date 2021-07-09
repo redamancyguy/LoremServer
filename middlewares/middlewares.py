@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.middleware.csrf import get_token
 from django.utils.deprecation import MiddlewareMixin
 from utils.dbs import R
 
@@ -21,7 +21,7 @@ class Test(MiddlewareMixin):
 
     @staticmethod
     def process_response(request, response):
-        print('test',request.META)
-        response['test'] = 'test'
-        # return redirect('/api/'+request.path)
+        print(get_token(request))
+        if not get_token(request):
+            response.set_cookie('csrftoken', get_token(request))
         return response

@@ -46,14 +46,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     # 'middlewares.csrf.CsrfVerifyMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'middlewares.utils.HttpPost2HttpOtherMiddleware',
     'middlewares.cookies.ResetCookiesMiddleware',
-    # 'middlewares.middlewares.Test',
+    'middlewares.middlewares.Test',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 

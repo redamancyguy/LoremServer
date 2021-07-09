@@ -12,7 +12,7 @@ class CsrfVerifyMiddleware(MiddlewareMixin):
     def process_request(request):
         print(request.META.get('HTTP_CSRFTOKEN'))
         if not request.META.get('HTTP_CSRFTOKEN') or not Rdb.hget(request.META.get('HTTP_CSRFTOKEN')[:15],
-                                                                       'tempCode') == request.META.get(
+                                                                  'tempCode') == request.META.get(
             'HTTP_CSRFTOKEN')[15:]:
             response = JsonResponse({'code': 5, 'message': '动态验证错误'})
             # response.status_code = 403
