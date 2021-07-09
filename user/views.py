@@ -131,7 +131,7 @@ class ChangePassword(DecodeRequestBody, View):
 
     def put(self, request, *args, **kwargs):
         try:
-            user = models.User.objects.get(emailCode=self.data['emailCode'])
+            user = models.User.objects.filter(emailCode=self.data['emailCode']).first()
             if not user:
                 return JsonResponse({
                     'code': 2,
