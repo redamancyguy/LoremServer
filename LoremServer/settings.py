@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'middlewares.utils.HttpPost2HttpOtherMiddleware',
     'middlewares.cookies.ResetCookiesMiddleware',
-    'middlewares.middlewares.Test',
+    # 'middlewares.middlewares.Test',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
