@@ -2,12 +2,14 @@ import json
 import base64
 from django.forms import model_to_dict
 from django.http import JsonResponse
+from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views import View
 import jwt
 import random
 
 from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
 
 from . import models
 from utils.dbs import R
@@ -40,6 +42,7 @@ class VerifyCode:
             return super().dispatch(request, *args, **kwargs)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class Login(DecodeRequestBody, VerifyCode, View):
     def post(self, request, *args, **kwargs):
         try:
@@ -65,6 +68,7 @@ class Login(DecodeRequestBody, VerifyCode, View):
                 'message': '登录成功'
             })
             response.set_cookie('token', token, max_age=1800)
+            response.set_cookie('csrftoken', get_token(request), max_age=1800)
             response.set_cookie('username', self.data['username'])
             return response
         except Exception as e:

@@ -10,6 +10,7 @@ from django.views import View
 import pandas as pd
 from bson import ObjectId
 from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
 
 from utils.dbs import R, M
 from utils.email import sendEmail
@@ -387,6 +388,7 @@ class Generate(VerifyToken, DecodeRequestBody, View):
             })
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class QuestionAnswer(DecodeRequestBody, View):
     @method_decorator(cache_page(60))
     def get(self, request, *args, **kwargs):
