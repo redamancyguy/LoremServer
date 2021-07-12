@@ -47,7 +47,7 @@ local newDynamicCode = math.random(1000000000,9999999999)
 if flag ~= 0 then
     local newStaticCode = math.random(1000000000,9999999999)
     red:hset(newStaticCode,'dynamicCode',newDynamicCode)
-    red:expire(newStaticCode, 15)
+    red:expire(newStaticCode, 5)
     red:close()
     ngx.header['Set-Cookie'] = {'CsrfToken='..newStaticCode..newDynamicCode,}
     ngx.header['Content-Type'] = 'application/json; charset=utf-8'
