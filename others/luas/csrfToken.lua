@@ -7,12 +7,12 @@ local ok, err = red:connect('127.0.0.1', 6379)
 if not ok then
     ngx.header['Content-Type'] = 'application/json; charset=utf-8'
     ngx.say(json.encode({
-        redisStatus = -1,
+        redisCode = -1,
         message = 'redisError'
     }))
   return
 end
-red:select(5)
+-- red:select(5)
 -- local ok, err = red:set_keepalive(60000, 20)
 function decodeCookie(s_cookie)
     local cookie = {}
@@ -28,7 +28,7 @@ end
 math.randomseed(tonumber(tostring(ngx.now()*1000):reverse():sub(1, 9)))
 local cookie = ngx.req.get_headers()['Cookie']
 if ngx.req.get_headers()['Cookie'] then
-    local cToken = decodeCookie(cookie).CsrfToken
+    local cToken = decodeCookie(cookie)['CsrfToken']
     if cToken and string.len(cToken) == 20 then
         cToken1 = string.sub(cToken,0,10)
         cToken2 = string.sub(cToken,11,20)
@@ -47,24 +47,25 @@ local newDynamicCode = math.random(1000000000,9999999999)
 if flag ~= 0 then
     local newStaticCode = math.random(1000000000,9999999999)
     red:hset(newStaticCode,'dynamicCode',newDynamicCode)
-    red:expire(newStaticCode, 5)
+    red:expire(newStaticCode, 15)
     red:close()
     ngx.header['Set-Cookie'] = {'CsrfToken='..newStaticCode..newDynamicCode,}
     ngx.header['Content-Type'] = 'application/json; charset=utf-8'
+    ngx.status = 403
     if flag == -1 then
         ngx.say(json.encode({
-            tokenStatus = flag,
-            message = 'VerifyTokenError'
+            csrfTokenCode = flag,
+            message = 'VerifyCsrfTokenError'
         }))
     elseif flag == -2 then
         ngx.say(json.encode({
-            tokenStatus = flag,
-            message = 'NoneTokenError'
+            csrfTokenCode = flag,
+            message = 'NoneCsrfTokenError'
         }))
     else
         ngx.say(json.encode({
-            tokenStatus = flag,
-            message = 'UnknownTokenError'
+            csrfTokenCode = flag,
+            message = 'UnknownCsrfTokenError'
         }))
     end
 else
