@@ -50,23 +50,11 @@ if flag ~= 0 then
     red:expire(newStaticCode, 15)
     red:close()
     ngx.header['Set-Cookie'] = {'CsrfToken='..newStaticCode..newDynamicCode,}
-    ngx.header['Content-Type'] = 'application/json; charset=utf-8'
-    ngx.status = 403
     if flag == -1 then
-        ngx.say(json.encode({
-            csrfTokenCode = flag,
-            message = 'VerifyCsrfTokenError'
-        }))
-    elseif flag == -2 then
-        ngx.say(json.encode({
-            csrfTokenCode = flag,
-            message = 'NoneCsrfTokenError'
-        }))
+        return ngx.redirect(ngx.var.request_uri,302)
     else
-        ngx.say(json.encode({
-            csrfTokenCode = flag,
-            message = 'UnknownCsrfTokenError'
-        }))
+--             os.execute("sleep " .. 1)
+        return ngx.redirect(ngx.var.request_uri,302)
     end
 else
     red:hset(cToken1,'dynamicCode',newDynamicCode)
