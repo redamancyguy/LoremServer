@@ -51,9 +51,10 @@ if flag ~= 0 then
     red:close()
     ngx.header['Set-Cookie'] = {'CsrfToken='..newStaticCode..newDynamicCode,}
     if flag == -1 then
-        return ngx.redirect(ngx.var.request_uri,302)
+        os.execute("sleep " .. 1)
+        return ngx.redirect(ngx.var.request_uri,301)
     else
---             os.execute("sleep " .. 1)
+        os.execute("sleep " .. 1)
         return ngx.redirect(ngx.var.request_uri,302)
     end
 else
