@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'LoremServer',
         'USER': 'user',
         'PASSWORD': '3325111',
-        'HOST': '39.104.209.232',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
         'ATOMIC_REQUEST': True,
