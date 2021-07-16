@@ -13,7 +13,7 @@ class Mongo:
         return self.__client
 
     def getDB(self, username='user', password='3325111'):
-        self.__database.authenticate(username, password)
+        #self.__database.authenticate(username, password)
         return self.__database
 
     def changeHost(self, host):
